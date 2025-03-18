@@ -54,10 +54,8 @@ variable "ddos_protection_plan" {
   description = "DDoS protection plan configuration"
   type = object({
     enable = bool
-    id     = string
   })
   default = {
     enable = false
-    id     = null
   }
 }
