@@ -15,7 +15,12 @@ output "address_space" {
 }
 
 output "subnets" {
-  value = azurerm_virtual_network.this.subnet
+  value = [
+    for subnet in azurerm_virtual_network.this.subnet : {
+      name             = subnet.name
+      address_prefixes = subnet.address_prefixes
+    }
+  ]
 }
 
 output "tags" {

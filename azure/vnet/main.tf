@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "this" {
     for_each = var.ddos_protection_plan.enable ? [1] : []
     content {
       enable = var.ddos_protection_plan.enable
-      id     = var.ddos_protection_plan.id
+      id     = var.ddos_protection_plan.enable ? azurerm_network_ddos_protection_plan.this[0].id : null
     }
   }
 
@@ -29,4 +29,11 @@ resource "azurerm_virtual_network" "this" {
   dns_servers = []
 
   tags = var.tags
+}
+
+resource "azurerm_network_ddos_protection_plan" "this" {
+  count               = var.ddos_protection_plan.enable ? 1 : 0
+  name                = "${var.name}-ddos-protection-plan"
+  location            = var.location
+  resource_group_name = var.resource_group_name
 }
